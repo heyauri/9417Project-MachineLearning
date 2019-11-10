@@ -19,7 +19,7 @@ Pull new codes(of others) from remote
 ##2.info
 
 ###2.1 项目文件结构
-
+````
 .
 ├── README.md
 ├── StudentLife_Dataset
@@ -30,6 +30,10 @@ Pull new codes(of others) from remote
 │   └── activity.py
 ├── process_output.py
 └── test.py
+````
 
+这样子data_export里面的文件相对路径则可以是
+
+`fn = "../StudentLife_Dataset/Inputs/sensing/activity/activity_u00.csv"`
 
 
