@@ -1,5 +1,6 @@
 from datetime import datetime
 import csv
+import glob
 
 dt_object = datetime.fromtimestamp(1364356801)
 
@@ -19,10 +20,27 @@ def cal_daily_data(total,by_period):
         total_acts=sum(total[date].values())
         for key in total[date]:
             arr_total[key].append(total[date][key]/total_acts)
+    # period
+    arr_period = {}
+    for date in by_period:
+        for period in by_period[date]:
+            if period not in arr_period:
+                arr_period[period]={0: [], 1: [], 2: [], 3: []}
+            period_acts=sum(by_period[date][period].values())
+            if period_acts<1:
+                continue
+            for key in range(4):
+                arr_period[period][key].append(by_period[date][period][key]/period_acts)
+    # calculate mean of daily value
+    result=[]
     for key in arr_total:
         arr_total[key]=sum(arr_total[key])/len(arr_total[key])
-
-    return arr_total
+        result.append(arr_total[key])
+    for period in arr_period:
+        for key in range(4):
+            arr_period[period][key]=sum(arr_period[period][key])/len(arr_period[period][key])
+            result.append(arr_period[period][key])
+    return result
 
 def process_acts(fn):
     with open(fn) as f:
@@ -59,9 +77,21 @@ def process_acts(fn):
 
         data=cal_daily_data(dict_days_total,dict_days_by_period)
         print(data)
+        return data
 
 
 
 
 if __name__ == "__main__":
-    process_acts(fn)
+    category = ['activity', 'audio', 'bluetooth', 'conversation', 'dark', 'gps', 'phonecharge', 'phonelock', 'wifi',
+                'wifi_location']
+
+    csv_group = glob.glob('../StudentLife_Dataset/Inputs/sensing/activity/*.csv')
+    print(csv_group)
+    for c in category:
+        rows = []
+        for i in csv_group:
+            with open(i, encoding='utf-8') as csv_files:
+                reader = csv.reader(csv_files)
+                print(len(list(reader)))
+    #process_acts(fn)
