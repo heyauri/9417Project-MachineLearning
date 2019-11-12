@@ -4,6 +4,7 @@ import pandas
 import matplotlib
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.decomposition import PCA
 
 
 def concat_dicts_by_uid(in_dict, out_dict):
@@ -12,26 +13,44 @@ def concat_dicts_by_uid(in_dict, out_dict):
         result[uid] = in_dict[uid] + out_dict[uid]
     return result
 
+def input_pca(in_dict,n="mle"):
+    df=pandas.DataFrame(in_dict).T
+    uids=in_dict.keys()
+    pca=PCA(n_components=n)
+    matrix=df.to_numpy()
+    pca.fit(matrix)
+    #print(pca.explained_variance_ratio_)
+    matrix=pca.transform(matrix)
 
-def get_corr(in_dict,heatmap=False):
-    output = process_output.get_output_dict(1)
+    df=pandas.DataFrame(matrix)
+    df["uid"]=uids
+    data=df.set_index("uid").T.to_dict("list")
+    #print(df)
+    return data
+
+
+
+def get_corr(in_dict,heatmap=False,reduce_dim=False,output_type="val",corr_method='kendall'):
+    if reduce_dim:
+        in_dict=input_pca(in_dict)
+    output = process_output.get_output_dict(output_type)
     d = concat_dicts_by_uid(in_dict, output)
     df=pandas.DataFrame(d).T
     labels=list(df)
     labels=labels[:-3]
     for i in range(0,len(labels)):
         labels[i]="X"+str(labels[i])
-    labels=labels+["Flourishing Scale","Positive","Negative"]
+    labels=labels+["FlourishingScale","Positive","Negative"]
 
     df.columns=labels
+    corr=df.corr(method=corr_method)
+    corr=corr[["FlourishingScale","Positive","Negative"]]
 
-    print(df)
     if heatmap:
         plt.figure(figsize=(12, 10))
-        cor = df.corr()
-        sns.heatmap(cor, annot=True, cmap=plt.cm.Reds)
+        sns.heatmap(corr, annot=True, cmap=plt.cm.Reds)
         plt.show()
-
+    return corr
 
 if __name__ == "__main__":
     # print(fs_df)
@@ -40,4 +59,5 @@ if __name__ == "__main__":
     # pandas.set_option('display.max_rows', data.shape[0] + 1)
     # print(data)
     activities = process_input.get_activity_data()
-    get_corr(activities)
+    #print(activities)
+    print(get_corr(activities,heatmap=True,output_type="val",reduce_dim=True))

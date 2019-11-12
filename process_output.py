@@ -46,15 +46,39 @@ def get_output_value():
     return data
 
 
-def get_output_dict(type):
+def classify_by_median(d):
+    df = pandas.DataFrame(d).T
+    labels = ["fs", "Positive", "Negative"]
+    df.columns = labels
+    arr_median = [df["fs"].median(), df["Positive"].median(), df["Negative"].median()]
+    #print(df)
+    for i in range(3):
+        label = labels[i]
+        tmp = []
+        arr = df[label].to_list()
+        for val in arr:
+            if val > arr_median[i]:
+                tmp.append(1)
+            else:
+                tmp.append(0)
+        df[label] = tmp
+    return df.T.to_dict("list")
+
+
+def get_output_dict(result_type="val"):
     csv_path = "./processed_data/output_value.csv"
     if os.path.isfile(csv_path):
-        return pandas.read_csv(csv_path).to_dict("list")
-    data = get_output_value()
-    result = data.set_index("uid").T.to_dict("list")
-    df = pandas.DataFrame(result)
-    df.to_csv(csv_path, index=0)
-    return result
+        result = pandas.read_csv(csv_path).to_dict("list")
+    else:
+        data = get_output_value()
+        result = data.set_index("uid").T.to_dict("list")
+        df = pandas.DataFrame(result)
+        df.to_csv(csv_path, index=0)
+    if result_type == "class":
+        res = classify_by_median(result)
+        return res
+    else:
+        return result
 
 
 if __name__ == "__main__":
@@ -63,4 +87,4 @@ if __name__ == "__main__":
     # data=get_output_value()
     # pandas.set_option('display.max_rows', data.shape[0] + 1)
     # print(data)
-    get_output_dict(1)
+    print(get_output_dict(result_type="class"))

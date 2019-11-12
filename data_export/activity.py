@@ -73,22 +73,11 @@ def process_acts(fn):
                         dict_days_by_period[date]["evening"][key] += 1
 
         data=cal_daily_data(dict_days_total,dict_days_by_period)
-        #print(data)
+        #print(dict_days_total)
         return data
 
 
 
 
 if __name__ == "__main__":
-    category = ['activity', 'audio', 'bluetooth', 'conversation', 'dark', 'gps', 'phonecharge', 'phonelock', 'wifi',
-                'wifi_location']
-
-    csv_group = glob.glob('../StudentLife_Dataset/Inputs/sensing/activity/*.csv')
-    print(csv_group)
-    for c in category:
-        rows = []
-        for i in csv_group:
-            with open(i, encoding='utf-8') as csv_files:
-                reader = csv.reader(csv_files)
-                print(len(list(reader)))
-    #process_acts(fn)
+    process_acts(fn)
