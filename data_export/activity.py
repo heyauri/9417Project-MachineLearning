@@ -2,9 +2,6 @@ from datetime import datetime
 import csv
 import glob
 
-dt_object = datetime.fromtimestamp(1364356801)
-
-print(dt_object.date())
 
 dict_days_total = {}
 dict_days_by_period = {}
@@ -76,7 +73,7 @@ def process_acts(fn):
                         dict_days_by_period[date]["evening"][key] += 1
 
         data=cal_daily_data(dict_days_total,dict_days_by_period)
-        print(data)
+        #print(data)
         return data
 
 
