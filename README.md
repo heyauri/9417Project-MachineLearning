@@ -68,6 +68,8 @@ input_dict={
  * `reduce_dim` 如果input_dict里面的features实在是太多 
  可应用`reduce_dim=True` 将input利用PCA降维 
  再看降维后的相关系数(此时应着眼于X0,X1,...)数字越后的所能代表原有input数据越少
+ * `labels_of_input` input中各个feature的名字 方便辨认
+ 
  
 一个示例的相关系数热力图:
 
