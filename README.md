@@ -69,4 +69,6 @@ input_dict={
  可应用`reduce_dim=True` 将input利用PCA降维 
  再看降维后的相关系数(此时应着眼于X0,X1,...)数字越后的所能代表原有input数据越少
  
- 
+一个示例的相关系数热力图:
+
+![heatmap_of_corr](./corr_activities.png)
