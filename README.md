@@ -1,6 +1,6 @@
 # 9417Project
 
-##1.How to use github:
+## 1.How to use github:
 
 Commit all codes to local repositories
           
@@ -16,9 +16,9 @@ Pull new codes(of others) from remote
 
 `git pull`
 
-##2.info
+## 2.info
 
-###2.1 项目文件结构
+### 2.1 项目文件结构
 ````
 .
 ├── README.md
@@ -41,7 +41,7 @@ Pull new codes(of others) from remote
 
 `fn = "../StudentLife_Dataset/Inputs/sensing/activity/activity_u00.csv"`
 
-###2.2 应用correlation做特征选择
+### 2.2 应用correlation做特征选择
 
 打开test.py,修改in_dict 为对应的input
 
