@@ -1,5 +1,5 @@
 import os.path
-from data_export import activity
+from data_export import activity,audio
 import glob,re
 import pandas
 
@@ -22,6 +22,22 @@ def get_activity_data():
         print("Processing "+fn+" ...")
         uid=get_uid_from_filename(fn)
         data=activity.process_acts(fn)
+        res[uid]=data
+
+    df=pandas.DataFrame(res)
+    df.to_csv(csv_path,index=0)
+    return res
+def get_audios_data():
+    csv_path="./processed_data/audio.csv"
+    if os.path.isfile(csv_path):
+        return pandas.read_csv(csv_path).to_dict("list")
+
+    csv_group = glob.glob('./StudentLife_Dataset/Inputs/sensing/audio/*.csv')
+    res={}
+    for fn in csv_group:
+        print("Processing "+fn+" ...")
+        uid=get_uid_from_filename(fn)
+        data=audio.process_audios(fn)
         res[uid]=data
 
     df=pandas.DataFrame(res)
