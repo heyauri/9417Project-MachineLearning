@@ -20,7 +20,7 @@ def input_pca(in_dict, n="mle"):
     pca = PCA(n_components=n)
     matrix = df.to_numpy()
     pca.fit(matrix)
-    # print(pca.explained_variance_ratio_)
+    print(pca.explained_variance_ratio_)
     matrix = pca.transform(matrix)
 
     df = pandas.DataFrame(matrix)
@@ -50,7 +50,7 @@ def get_corr(in_dict, labels_of_input=False, heatmap=False, reduce_dim=False, ou
 
     df.columns = labels
     corr = df.corr(method=corr_method)
-    corr = corr[["FlourishingScale", "Positive", "Negative"]]
+    #corr = corr[["FlourishingScale", "Positive", "Negative"]]
 
     if heatmap:
         plt.figure(figsize=(12, 10))

@@ -1,6 +1,6 @@
 import process_input
 import calc_corr
-import open_dark
+import bt_2,wifi_2
 
 if __name__ == "__main__":
     in_dict = process_input.get_activity_data()
@@ -18,8 +18,12 @@ if __name__ == "__main__":
                      "daily 0 during evening", "daily 1 during evening", "daily 2 during evening",
                      "daily 0 during night", "daily 1 during night", "daily 2 during night",
                      ]
-    #in_dict=process_input.get_audios_data()
-    in_dict= open_dark.call()
-    print(in_dict)
-    print(calc_corr.get_corr(in_dict,labels_of_input=labels_of_audios,heatmap=True,output_type="class",
+    labels_of_dark=["light duration in morning","light duration in afternoon","light duration in evening","light duration in night"]
+    in_dict=process_input.get_conversations_data()
+    #in_dict= open_dark.call()
+    #dict1=bt_2.get_bt()
+    #dict2=wifi_2.get_wifi()
+    print(calc_corr.get_corr(in_dict,labels_of_input=labels_of_dark,heatmap=True,output_type="val",
                              reduce_dim=False,corr_method="pearson"))
+    #print(calc_corr.get_corr(dict2,labels_of_input=labels_of_dark,heatmap=True,output_type="val",
+    #                        reduce_dim=False,corr_method="pearson"))
