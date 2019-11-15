@@ -4,7 +4,7 @@
 
 目前用kNN, LogisticRegression, RandomForest三种方法实现了三个弱智模型,仍需调参
 
-![plot_of_kNN.png](./plot_of_kNN.png)
+![plot_of_kNN.png](imgs/plot_of_kNN.png)
 
 `kNN.py,logistic_regression.py,random_forest.py`这三个文件中都实现了数据集获取，模型训练，k fold交叉验证，与
 accuracy制图等功能，可作为参考
@@ -99,4 +99,4 @@ input_dict={
  
 一个示例的相关系数热力图:
 
-![heatmap_of_corr](./corr_activities.png)
+![heatmap_of_corr](imgs/corr_activities.png)
