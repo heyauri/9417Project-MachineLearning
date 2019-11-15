@@ -12,30 +12,43 @@ fn = "../StudentLife_Dataset/Inputs/sensing/audio/audio_u00.csv"
 def cal_daily_data(total, by_period):
     # total
     arr_total = {0: [], 1: [], 2: []}
+    average_total = {0: [], 1: [], 2: []}
     for date in total:
         total_acts = sum(total[date].values())
         for key in total[date]:
-            arr_total[key].append(total[date][key] / total_acts)
+            arr_total[key].append(total[date][key])
+            average_total[key].append(total[date][key] / total_acts)
     # period
     arr_period = {}
+    average_period = {}
     for date in by_period:
         for period in by_period[date]:
             if period not in arr_period:
                 arr_period[period] = {0: [], 1: [], 2: []}
+                average_period[period] = {0: [], 1: [], 2: []}
             period_acts = sum(by_period[date][period].values())
             if period_acts < 1:
                 continue
             for key in range(3):
-                arr_period[period][key].append(by_period[date][period][key] / period_acts)
+                arr_period[period][key].append(by_period[date][period][key])
+                average_period[period][key].append(by_period[date][period][key] / period_acts)
     # calculate mean of daily value
     result = []
     for key in arr_total:
         arr_total[key] = sum(arr_total[key]) / len(arr_total[key])
+        average_total[key] = sum(average_total[key]) / len(average_total[key])
         result.append(arr_total[key])
+        result.append(average_total[key])
     for period in arr_period:
         for key in range(3):
-            arr_period[period][key] = sum(arr_period[period][key]) / len(arr_period[period][key])
+            if len(arr_period[period][key]):
+                arr_period[period][key] = sum(arr_period[period][key]) / len(arr_period[period][key])
+                average_period[period][key] = sum(average_period[period][key]) / len(average_period[period][key])
+            else:
+                arr_period[period][key] = 0
+                average_period[period][key] = 0
             result.append(arr_period[period][key])
+            result.append(average_period[period][key])
     return result
 
 
@@ -73,8 +86,8 @@ def process_audios(fn):
                         dict_days_by_period[date]["evening"][key] += 1
 
         data = cal_daily_data(dict_days_total, dict_days_by_period)
-        #print(dict_days_total)
-        #print(dict_days_by_period)
+        # print(dict_days_total)
+        # print(dict_days_by_period)
         return data
 
 

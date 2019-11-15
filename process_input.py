@@ -1,5 +1,5 @@
 import os.path
-from data_export import activity, audio, conversation, start_end_timestamp
+from data_export import activity, audio, conversation, start_end_timestamp, bt, wifi
 import glob, re
 import pandas
 
@@ -62,7 +62,7 @@ def get_conversations_data():
         data = conversation.process_conversations(fn)
         res[uid] = data
     df = pandas.DataFrame(res)
-    #df.to_csv(csv_path, index=0)
+    df.to_csv(csv_path, index=0)
     return res
 
 
@@ -96,8 +96,9 @@ def get_dark_data():
         data = start_end_timestamp.process_start_end(fn)
         res[uid] = data
     df = pandas.DataFrame(res)
-    df.to_csv(csv_path,index=0)
+    df.to_csv(csv_path, index=0)
     return res
+
 
 def get_phonelock_data():
     csv_path = "./processed_data/phonelock.csv"
@@ -112,7 +113,41 @@ def get_phonelock_data():
         data = start_end_timestamp.process_start_end(fn)
         res[uid] = data
     df = pandas.DataFrame(res)
-    df.to_csv(csv_path,index=0)
+    df.to_csv(csv_path, index=0)
+    return res
+
+
+def get_bt_data():
+    csv_path = "./processed_data/bluetooth.csv"
+    if os.path.isfile(csv_path):
+        return pandas.read_csv(csv_path).to_dict("list")
+
+    csv_group = glob.glob('./StudentLife_Dataset/Inputs/sensing/bluetooth/*.csv')
+    res = {}
+    for fn in csv_group:
+        print("Processing " + fn + " ...")
+        uid = get_uid_from_filename(fn)
+        data = bt.process_bts(fn)
+        res[uid] = data
+    df = pandas.DataFrame(res)
+    df.to_csv(csv_path, index=0)
+    return res
+
+
+def get_wifi_data():
+    csv_path = "./processed_data/wifi.csv"
+    if os.path.isfile(csv_path):
+        return pandas.read_csv(csv_path).to_dict("list")
+
+    csv_group = glob.glob('./StudentLife_Dataset/Inputs/sensing/wifi/*.csv')
+    res = {}
+    for fn in csv_group:
+        print("Processing " + fn + " ...")
+        uid = get_uid_from_filename(fn)
+        data = bt.process_bts(fn)
+        res[uid] = data
+    df = pandas.DataFrame(res)
+    df.to_csv(csv_path, index=0)
     return res
 
 

@@ -1,5 +1,31 @@
 # 9417Project
 
+## 0. 用已有数据训练模型
+
+目前用kNN, LogisticRegression, RandomForest三种方法实现了三个弱智模型,仍需调参
+
+![plot_of_kNN.png](./plot_of_kNN.png)
+
+`kNN.py,logistic_regression.py,random_forest.py`这三个文件中都实现了数据集获取，模型训练，k fold交叉验证，与
+accuracy制图等功能，可作为参考
+
+### 怎样使用?
+
+*  重新下载项目(建议)
+
+因为对比开头已作出太多更改 建议重新下载此项目，尤其是processed_data文件夹不可或缺
+
+* 调节threshold:
+    
+在各个model的训练中都使用了`get_dataset.py`的`get_data_sets(threshold)`方法，此函数接受一个阈值，
+返回与output各指标间相关系数超过了该阈值的所有指标作为数据集(无论正负相关)
+
+
+* 调参及实现其它model:
+
+可以在上述的三个model文件的基础上 修改其中的`evaluate_model()`方法，以实现其它模型或者找到更好的参数...
+
+
 ## 1.How to use github:
 
 Commit all codes to local repositories
