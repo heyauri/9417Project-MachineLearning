@@ -32,7 +32,7 @@ def evaluate_model(x_train, x_test, y_train, y_test, decomposition=False):
 
 if __name__ == "__main__":
     method="RandomForest"
-    threshold=0.3
+    threshold=0.2
     dfs = get_dataset.get_data_sets(threshold=threshold)
     results={}
     print("Method: "+method)

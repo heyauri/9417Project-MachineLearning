@@ -27,7 +27,7 @@ def get_data_sets(threshold=0.1):
         csv_file = dir_prefix + csv_arr[csv_index] + ".csv"
         df = pandas.read_csv(csv_file)
         in_dict = df.to_dict("list")
-        features = calc_corr.get_corr_with_threshold(in_dict, out_dict)
+        features = calc_corr.get_corr_with_threshold(in_dict, out_dict,threshold=threshold)
         in_df = df.T
         for label in out_labels:
             if len(features[label]) < 1:
