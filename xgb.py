@@ -59,7 +59,7 @@ def evaluate_model(x_train, x_test, y_train, y_test, decomposition=False):
 if __name__ == "__main__":
     method = "XGBoost"
     threshold = 0
-    dfs = get_dataset.get_data_sets(threshold=threshold)
+    dfs = get_dataset.get_k_features_by_importance(k=40)
     results = {}
     print("Method: " + method)
     for label in dfs:
@@ -72,13 +72,14 @@ if __name__ == "__main__":
         # print(df.columns)
         y = df[label].to_numpy()
         # k fold cross validation
-        # KF = StratifiedKFold(n_splits=10, shuffle=True)
-        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.10, random_state=25)
+        KF = StratifiedKFold(n_splits=10, shuffle=True)
 
         accuracies = []
-
-        accuracy = evaluate_model(x_train, x_test, y_train, y_test, decomposition=False)
-        accuracies.append(accuracy * 100)
+        for i_train, i_test in KF.split(x, y):
+            x_train, x_test = x[i_train], x[i_test]
+            y_train, y_test = y[i_train], y[i_test]
+            accuracy = evaluate_model(x_train, x_test, y_train, y_test, decomposition=False)
+            accuracies.append(accuracy*100)
 
         print("Average k-fold accuracy of " + label + " is: " + str(sum(accuracies) / len(accuracies)) + "%")
         results[label] = accuracies
