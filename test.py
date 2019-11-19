@@ -22,7 +22,7 @@ if __name__ == "__main__":
                         ]
     labels_of_dark = ["light duration in morning", "light duration in afternoon", "light duration in evening",
                       "light duration in night"]
-    in_dict = process_input.get_audios_data()
+    in_dict = process_input.get_activity_data()
     # in_dict= open_dark.call()
     # dict1=bt_2.get_bt()
     # dict2=wifi_2.get_wifi()

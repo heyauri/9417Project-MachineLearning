@@ -35,10 +35,12 @@ def cal_daily_data(total, by_period):
                 average_period[period][key].append(by_period[date][period][key] / period_acts)
     # calculate mean of daily value
     result = []
+    temp_total={}
     for key in arr_total:
-        arr_total[key] = sum(arr_total[key]) / len(arr_total[key])
+        temp_total[key] = sum(arr_total[key]) / len(arr_total[key])
         average_total[key] = sum(average_total[key]) / len(average_total[key])
-        result.append(arr_total[key])
+        result.append(sum(arr_total[key]))
+        result.append(temp_total[key])
         result.append(average_total[key])
     for period in arr_period:
         for key in range(4):
@@ -76,7 +78,7 @@ def process_acts(fn):
             for key in range(4):
                 if key == int(line[1]):
                     hour = dt_object.hour
-                    if hour < 5 or hour >= 20:
+                    if hour < 6 or hour >= 20:
                         dict_days_by_period[date]["night"][key] += 1
                     else:
                         dict_days_by_period[date]["day"][key] += 1

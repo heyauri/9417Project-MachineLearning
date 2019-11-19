@@ -34,10 +34,13 @@ def cal_daily_data(total, by_period):
                 average_period[period][key].append(by_period[date][period][key] / period_acts)
     # calculate mean of daily value
     result = []
+    temp_total={}
+
     for key in arr_total:
-        arr_total[key] = sum(arr_total[key]) / len(arr_total[key])
+        temp_total[key] = sum(arr_total[key]) / len(arr_total[key])
         average_total[key] = sum(average_total[key]) / len(average_total[key])
-        result.append(arr_total[key])
+        result.append(sum(arr_total[key]))
+        result.append(temp_total[key])
         result.append(average_total[key])
     for period in arr_period:
         for key in range(3):
@@ -70,20 +73,15 @@ def process_audios(fn):
             ## count audios per day and devided into each period
             if date not in dict_days_by_period:
                 dict_days_by_period[date] = {
-                    "morning": default.copy(), "noon": default.copy(),
-                    "evening": default.copy(), "night": default.copy()
+                    "day": default.copy(), "night": default.copy()
                 }
             for key in range(3):
                 if key == int(line[1]):
                     hour = dt_object.hour
-                    if hour < 5 or hour >= 20:
+                    if hour < 6 or hour >= 20:
                         dict_days_by_period[date]["night"][key] += 1
-                    elif 5 <= hour < 11:
-                        dict_days_by_period[date]["morning"][key] += 1
-                    elif 11 <= hour < 17:
-                        dict_days_by_period[date]["noon"][key] += 1
-                    elif 17 <= hour < 20:
-                        dict_days_by_period[date]["evening"][key] += 1
+                    else:
+                        dict_days_by_period[date]["day"][key] += 1
 
         data = cal_daily_data(dict_days_total, dict_days_by_period)
         # print(dict_days_total)

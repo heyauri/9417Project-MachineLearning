@@ -23,7 +23,7 @@ def evaluate_model(x_train, x_test, y_train, y_test, decomposition=False):
         x_test = pca.transform(x_test)
 
     # train model
-    model = RandomForestClassifier(n_estimators=100)
+    model = RandomForestClassifier(n_estimators=10000)
     model.fit(x_train, y_train)
 
     # evaluate accuracy
@@ -33,7 +33,7 @@ def evaluate_model(x_train, x_test, y_train, y_test, decomposition=False):
 if __name__ == "__main__":
     method="RandomForest"
     threshold=0.2
-    dfs = get_dataset.get_data_sets(threshold=threshold)
+    dfs = get_dataset.get_k_features_by_importance(k=40)
     results={}
     print("Method: "+method)
     for label in dfs:

@@ -23,7 +23,7 @@ def evaluate_model(x_train, x_test, y_train, y_test, decomposition=False):
         x_test = pca.transform(x_test)
 
     # train model
-    model = KNeighborsClassifier(n_neighbors=10)
+    model = KNeighborsClassifier(n_neighbors=3)
     model.fit(x_train, y_train)
 
     # evaluate accuracy
@@ -32,8 +32,7 @@ def evaluate_model(x_train, x_test, y_train, y_test, decomposition=False):
 
 if __name__ == "__main__":
     method="kNN"
-    threshold=0.2
-    dfs = get_dataset.get_data_sets(threshold=threshold)
+    dfs = get_dataset.get_k_features_by_importance(k=40)
     results={}
     print("Method: "+method)
     for label in dfs:
@@ -51,7 +50,7 @@ if __name__ == "__main__":
         for i_train, i_test in KF.split(x, y):
             x_train, x_test = x[i_train], x[i_test]
             y_train, y_test = y[i_train], y[i_test]
-            accuracy = evaluate_model(x_train, x_test, y_train, y_test, decomposition=True)
+            accuracy = evaluate_model(x_train, x_test, y_train, y_test, decomposition=False)
             accuracies.append(accuracy*100)
 
         print("Average k-fold accuracy of "+label+" is: " + str(sum(accuracies) / len(accuracies))+"%")

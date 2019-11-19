@@ -1,5 +1,5 @@
 import os.path
-from data_export import activity, audio, conversation, start_end_timestamp, bt, wifi
+from data_export import activity, audio, conversation, start_end_timestamp, bt, wifi ,gps ,wifi_location
 import glob, re
 import pandas
 
@@ -145,6 +145,37 @@ def get_wifi_data():
         print("Processing " + fn + " ...")
         uid = get_uid_from_filename(fn)
         data = bt.process_bts(fn)
+        res[uid] = data
+    df = pandas.DataFrame(res)
+    df.to_csv(csv_path, index=0)
+    return res
+
+def get_gps_data():
+    csv_path = "./processed_data/gps.csv"
+    if os.path.isfile(csv_path):
+        return pandas.read_csv(csv_path).to_dict("list")
+
+    csv_group = glob.glob('./StudentLife_Dataset/Inputs/sensing/gps/*.csv')
+    res = {}
+    for fn in csv_group:
+        print("Processing " + fn + " ...")
+        uid = get_uid_from_filename(fn)
+        data = gps.process_gps(fn)
+        res[uid] = data
+    df = pandas.DataFrame(res)
+    df.to_csv(csv_path, index=0)
+    return res
+def get_wifi_location_data():
+    csv_path = "./processed_data/wifi_location.csv"
+    if os.path.isfile(csv_path):
+        return pandas.read_csv(csv_path).to_dict("list")
+
+    csv_group = glob.glob('./StudentLife_Dataset/Inputs/sensing/wifi_location/*.csv')
+    res = {}
+    for fn in csv_group:
+        print("Processing " + fn + " ...")
+        uid = get_uid_from_filename(fn)
+        data = wifi_location.process_wifi_location(fn)
         res[uid] = data
     df = pandas.DataFrame(res)
     df.to_csv(csv_path, index=0)

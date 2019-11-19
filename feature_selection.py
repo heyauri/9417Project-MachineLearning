@@ -1,7 +1,5 @@
 from sklearn.preprocessing import StandardScaler
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score
-from sklearn.decomposition import PCA
 import numpy, pandas
 import get_dataset
 from matplotlib import pyplot as plt
@@ -9,6 +7,8 @@ from sklearn.feature_selection import SelectKBest, chi2
 from scipy.stats import pearsonr
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
+import os.path
+import process_output
 
 
 def multivariate_pearsonr(X, y):
@@ -34,15 +34,15 @@ def feature_select(x, y, labels, y_contin):
     forest.fit(x, y)
     print("__________Evaluating by RandomForest importance and pearson correlation__________")
     print(
-        "1) rank , 2) Feature name , 3) RandomForest importance , "
+        "1) rank , 2) Feature name ,                                       3) RandomForest importance , "
         "4) Pearson Correlation , 5) p_value of pearson correlation")
     pearson_score, p_values = multivariate_pearsonr(x, y_contin)
     importances = forest.feature_importances_
     indices = numpy.argsort(importances)[::-1]
     for f in range(x_train.shape[1]):
         print("%2d)         %-*s %-*f %-*f %-*f" % (
-        f + 1, 30, labels[indices[f]], 28, importances[indices[f]], 28, pearson_score[indices[f]],
-        28, p_values[indices[f]]))
+            f + 1, 63, labels[indices[f]], 26, importances[indices[f]], 26, pearson_score[indices[f]],
+            26, p_values[indices[f]]))
     print("score:", forest.score(x_test, y_test))
 
 
@@ -59,7 +59,7 @@ if __name__ == "__main__":
         df.loc[df[label] <= y_median, label] = 0
         df.loc[df[label] > y_median, label] = 1
         x = df.drop(columns=label)
-        #print(x.shape)
+        # print(x.shape)
         labels = x.columns
 
         y = df[label].to_numpy()
