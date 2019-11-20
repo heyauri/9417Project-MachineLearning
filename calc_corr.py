@@ -7,6 +7,7 @@ import seaborn as sns
 from sklearn.decomposition import PCA
 import random
 
+sns.set(font_scale=1.5)
 
 def concat_dicts_by_uid(in_dict, out_dict):
     result = {}
@@ -39,7 +40,7 @@ def get_corr(in_dict, out_dict, labels_of_input=False, heatmap=False, reduce_dim
     labels = list(df)
     labels = labels[:-3]
     if labels_of_input and len(labels_of_input) == len(labels):
-        labels = labels_of_input
+        labels = [i.capitalize() for i in labels_of_input]
     else:
         for i in range(0, len(labels)):
             labels[i] = "X" + str(labels[i])
@@ -48,11 +49,17 @@ def get_corr(in_dict, out_dict, labels_of_input=False, heatmap=False, reduce_dim
     df.columns = labels
     corr = df.corr(method=corr_method)
     corr = corr[["FlourishingScale", "Positive", "Negative"]]
-
+    corr = corr.drop(index=["FlourishingScale", "Positive", "Negative"])
     if heatmap:
-        plt.figure(figsize=(14, 14))
+        f, ax = plt.subplots(figsize=(12, 10))
         cmaps = [plt.cm.Greens, plt.cm.Reds, plt.cm.Blues, plt.cm.Purples]
+        ax.set_xticklabels(corr, rotation='horizontal')
         sns.heatmap(corr, annot=True, cmap=cmaps[random.randint(0, len(cmaps) - 1)])
+
+        label_y = ax.get_yticklabels()
+        plt.setp(label_y, rotation=360)
+        label_x = ax.get_xticklabels()
+        plt.setp(label_x, rotation=0)
         plt.show()
     return corr
 
