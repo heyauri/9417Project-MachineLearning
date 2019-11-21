@@ -85,7 +85,7 @@ memory_dict={"arr":label_of_importance,"dfs":0}
 
 def get_data_sets(threshold=0):
     global memory_dict
-    if memory_dict["dfs"] !=0:
+    if memory_dict["dfs"] != 0:
         return memory_dict["dfs"]
 
     out_dict = process_output.get_output_dict("val")
@@ -141,7 +141,7 @@ def feature_select(x, y, labels, importance=30):
     indices = numpy.argsort(importances)[::-1]
 
     memory_dict["arr"] = [labels[indices[i]] for i in range(0, len(labels))]
-    return label_of_importance[:importance]
+    return memory_dict["arr"][0:importance]
 
 
 def get_k_features_by_importance(k=30):
@@ -157,6 +157,7 @@ def get_k_features_by_importance(k=30):
     if len(tmp_labels) < 1:
         return dfs
     dfs = get_data_sets(threshold=0)
+
     for label in out_labels:
         df = dfs[label]
         # transfer the output values from Numeric to Class (0-> LOW , 1-> HIGH) using median

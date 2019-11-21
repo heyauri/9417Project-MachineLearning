@@ -39,32 +39,33 @@ if __name__ == "__main__":
     best_score = default_dict.copy()
     best_k = default_dict.copy()
     feature_upper = 80
-    for feature_num in range(44, feature_upper + 1):
+    for feature_num in range(1, feature_upper + 1):
         print("current feature number: " + str(feature_num))
         dfs = get_dataset.get_k_features_by_importance(k=feature_num)
         for label in dfs:
-            best_accuracy = 0
+            average_accuracies = []
             df = dfs[label]
             x = df.drop(columns=label).to_numpy()
             y = df[label].to_numpy()
             # k fold cross validation
-            KF = StratifiedKFold(n_splits=20, shuffle=True)
-            for k in range(1, min(30, feature_num + 1)):
+            for k in range(1, 30):
                 accuracies = []
+                KF = StratifiedKFold(n_splits=20, shuffle=True)
                 for i_train, i_test in KF.split(x, y):
                     x_train, x_test = x[i_train], x[i_test]
                     y_train, y_test = y[i_train], y[i_test]
                     model = KNeighborsClassifier(n_neighbors=k)
-                    accuracy = evaluate_model(x_train, x_test, y_train, y_test, model, decomposition=True)
+                    accuracy = evaluate_model(x_train, x_test, y_train, y_test, model, decomposition=False)
                     accuracies.append(accuracy * 100)
+
                 average_accuracy = sum(accuracies) / len(accuracies)
-                best_accuracy = max([best_accuracy, average_accuracy])
+                average_accuracies.append(average_accuracy)
                 if average_accuracy > best_score[label] and len(accuracies) > 0:
                     best_score[label] = average_accuracy
                     best_k[label] = k
                     feature_nums[label] = feature_num
                     results[label] = accuracies.copy()
-            results_trend_by_feature_num[label].append(best_accuracy)
+            results_trend_by_feature_num[label].append(sum(average_accuracies) / len(average_accuracies))
 
     fig, ax = plt.subplots(figsize=(8, 8))
 
@@ -86,7 +87,7 @@ if __name__ == "__main__":
     plt.savefig("./imgs/" + method + "_best_score.png")
     plt.show()
     plt.xlabel('Feature numbers')
-    plt.ylabel('Best ' + method + ' accuracy of corresponded feature numbers in (%)', fontsize=11)
+    plt.ylabel('Average ' + method + ' accuracy of corresponded feature numbers in (%)', fontsize=11)
 
     plt.ylim(0, 110)
     plt.xlim(0, feature_upper + 1)
