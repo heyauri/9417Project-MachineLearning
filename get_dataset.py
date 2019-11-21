@@ -11,6 +11,8 @@ import os.path
 import process_output, calc_corr
 
 dir_prefix = "./processed_data/"
+result_dir_prefix = "./result_data/"
+
 csv_arr = ["activity", "audio", "bluetooth", "dark", "phonecharge", "phonelock", "wifi", "conversation",
            "wifi_location", "gps"]
 
@@ -77,8 +79,15 @@ def match_feature_label(key, index):
     except KeyError or IndexError:
         return key + "_" + str(index)
 
+label_of_importance = []
 
-def get_data_sets(threshold=0.1):
+memory_dict={"arr":label_of_importance,"dfs":0}
+
+def get_data_sets(threshold=0):
+    global memory_dict
+    if memory_dict["dfs"] !=0:
+        return memory_dict["dfs"]
+
     out_dict = process_output.get_output_dict("val")
     out_df = pandas.DataFrame(out_dict).T
     dfs = {}
@@ -86,8 +95,8 @@ def get_data_sets(threshold=0.1):
     out_df.columns = out_labels
     tmp_labels = out_labels.copy()
     for label in out_labels:
-        if os.path.isfile(dir_prefix + label + "_" + str(threshold) + ".csv"):
-            dfs[label] = pandas.read_csv(dir_prefix + label + "_" + str(threshold) + ".csv", index_col=0)
+        if os.path.isfile(result_dir_prefix + label + "_" + str(threshold) + ".csv"):
+            dfs[label] = pandas.read_csv(result_dir_prefix + label + "_" + str(threshold) + ".csv", index_col=0)
             tmp_labels.remove(label)
         else:
             dfs[label] = out_df[[label]]
@@ -109,11 +118,17 @@ def get_data_sets(threshold=0.1):
 
     for label in out_labels:
         df = dfs[label]
-        df.to_csv(dir_prefix + label + "_" + str(threshold) + ".csv")
+        df.to_csv(result_dir_prefix + label + "_" + str(threshold) + ".csv")
+    memory_dict["dfs"]=dfs
     return dfs
 
 
+
 def feature_select(x, y, labels, importance=30):
+    global memory_dict
+    label_of_importance=memory_dict["arr"]
+    if len(label_of_importance) > importance:
+        return label_of_importance[:importance]
     scaling = StandardScaler()
     scaling.fit(x)
     x = scaling.transform(x)
@@ -125,7 +140,8 @@ def feature_select(x, y, labels, importance=30):
     importances = forest.feature_importances_
     indices = numpy.argsort(importances)[::-1]
 
-    return [labels[indices[i]] for i in range(0, importance)]
+    memory_dict["arr"] = [labels[indices[i]] for i in range(0, len(labels))]
+    return label_of_importance[:importance]
 
 
 def get_k_features_by_importance(k=30):
@@ -135,8 +151,8 @@ def get_k_features_by_importance(k=30):
     out_labels = ["FlourishingScale", "Positive", "Negative"]
     tmp_labels = out_labels.copy()
     for label in out_labels:
-        if os.path.isfile(dir_prefix + label + "_k" + str(k) + ".csv"):
-            dfs[label] = pandas.read_csv(dir_prefix + label + "_k" + str(k) + ".csv", index_col=0)
+        if os.path.isfile(result_dir_prefix + label + "_k" + str(k) + ".csv"):
+            dfs[label] = pandas.read_csv(result_dir_prefix + label + "_k" + str(k) + ".csv", index_col=0)
             tmp_labels.remove(label)
     if len(tmp_labels) < 1:
         return dfs
@@ -155,7 +171,7 @@ def get_k_features_by_importance(k=30):
         dfs[label] = df[labels]
     for label in out_labels:
         df = dfs[label]
-        df.to_csv(dir_prefix + label + "_k" + str(k) + ".csv")
+        df.to_csv(result_dir_prefix + label + "_k" + str(k) + ".csv")
     return dfs
 
 

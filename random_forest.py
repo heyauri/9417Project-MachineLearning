@@ -23,7 +23,7 @@ def evaluate_model(x_train, x_test, y_train, y_test, decomposition=False):
         x_test = pca.transform(x_test)
 
     # train model
-    model = RandomForestClassifier(n_estimators=1234,max_depth=15)
+    model = RandomForestClassifier(n_estimators=200,max_depth=15)
     model.fit(x_train, y_train)
 
     # evaluate accuracy
@@ -33,7 +33,7 @@ def evaluate_model(x_train, x_test, y_train, y_test, decomposition=False):
 if __name__ == "__main__":
     method="RandomForest"
     threshold=0.2
-    dfs = get_dataset.get_k_features_by_importance(k=20)
+    dfs = get_dataset.get_k_features_by_importance(k=50)
     results={}
     print("Method: "+method)
     for label in dfs:
@@ -41,13 +41,13 @@ if __name__ == "__main__":
         x = df.drop(columns=label).to_numpy()
         y = df[label].to_numpy()
         # k fold cross validation
-        KF = StratifiedKFold(n_splits=20,shuffle=True)
+        KF = StratifiedKFold(n_splits=10,shuffle=True)
 
         accuracies = []
         for i_train, i_test in KF.split(x, y):
             x_train, x_test = x[i_train], x[i_test]
             y_train, y_test = y[i_train], y[i_test]
-            accuracy = evaluate_model(x_train, x_test, y_train, y_test, decomposition=False)
+            accuracy = evaluate_model(x_train, x_test, y_train, y_test, decomposition=True)
             accuracies.append(accuracy*100)
 
         print("Average k-fold accuracy of "+label+" is: " + str(sum(accuracies) / len(accuracies))+"%")

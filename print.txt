@@ -1,0 +1,14 @@
+Method: kNN
+Average k-fold accuracy of FlourishingScale while k=19 is: 68.16666666666666%
+Average k-fold accuracy of Positive while k=3 is: 60.0%
+Average k-fold accuracy of Negative while k=26 is: 70.66666666666666%
+
+Method: LogisticRegression
+Average k-fold accuracy of FlourishingScale is: 59.833333333333336%
+Average k-fold accuracy of Positive is: 60.83333333333333%
+Average k-fold accuracy of Negative is: 67.83333333333333%
+
+Method: RandomForest
+Average k-fold accuracy of FlourishingScale is: 64.83333333333333%
+Average k-fold accuracy of Positive is: 62.5%
+Average k-fold accuracy of Negative is: 57.0%
