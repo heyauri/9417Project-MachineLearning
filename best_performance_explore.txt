@@ -1,4 +1,4 @@
-Best performance using grid search
+Best performance of the models using grid search
 
 Method: kNN
 Average 20-fold accuracy of FlourishingScale while k=13 and feature number=35 is 73 %
@@ -11,6 +11,6 @@ Average 20-fold accuracy of Positive while feature number=3 is 72 %
 Average 20-fold accuracy of Negative while feature number=12 is 79 %
 
 Method: RandomForest
-Average k-fold accuracy of FlourishingScale is: 64.83333333333333%
-Average k-fold accuracy of Positive is: 62.5%
-Average k-fold accuracy of Negative is: 57.0%
+Average 20-fold accuracy of FlourishingScale while n_estimators=100 and feature number=13 is 78 %
+Average 20-fold accuracy of Positive while n_estimators=50 and feature number=19 is 77 %
+Average 20-fold accuracy of Negative while n_estimators=150 and feature number=14 is 78 %
