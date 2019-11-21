@@ -49,7 +49,7 @@ if __name__ == "__main__":
             y = df[label].to_numpy()
             # 20 fold cross validation
             #
-            for k in range(100, 600, 100):
+            for k in range(50, 201, 50):
                 accuracies = []
                 KF = StratifiedKFold(n_splits=20, shuffle=True)
                 for i_train, i_test in KF.split(x, y):
