@@ -86,6 +86,8 @@ if __name__ == "__main__":
     plt.legend(bbox_to_anchor=(1.0, 1), loc=1, borderaxespad=0.)
     plt.savefig("./imgs/" + method + "_best_score.png")
     plt.show()
+
+    fig, ax = plt.subplots(figsize=(10,10))
     plt.xlabel('Feature numbers')
     plt.ylabel('Average ' + method + ' accuracy of corresponded feature numbers in (%)', fontsize=11)
 
