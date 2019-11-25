@@ -38,7 +38,7 @@ def process_panas():
     ps_df = ps_df.groupby(ps_df['uid'])['positive', 'negative'].mean().reset_index()
     return ps_df
 
-
+#Process the output values
 def get_output_value():
     fs_df = process_fs()
     ps_df = process_panas()
@@ -64,7 +64,7 @@ def classify_by_median(d):
         df[label] = tmp
     return df.T.to_dict("list")
 
-
+#convert dataFrame to a dict
 def get_output_dict(result_type="val"):
     csv_path = "./processed_data/output_value.csv"
     if os.path.isfile(csv_path):

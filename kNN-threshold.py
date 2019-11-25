@@ -8,7 +8,6 @@ from matplotlib import pyplot as plt
 
 
 def evaluate_model(x_train, x_test, y_train, y_test, model, decomposition=False):
-    # x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.10, random_state=25)
 
     # normalizing
     scaling = StandardScaler()
@@ -38,7 +37,7 @@ if __name__ == "__main__":
     results_trend_by_feature_num = {"FlourishingScale": [], "Positive": [], "Negative": []}
     best_score = default_dict.copy()
     best_k = default_dict.copy()
-    feature_upper = 80
+    #threshold of the correlation coefficients
     arr=numpy.arange(0.,0.35,0.01)
     for threshold in arr:
         print("current threshold: " + str(threshold))

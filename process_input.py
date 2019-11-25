@@ -3,7 +3,7 @@ from data_export import activity, audio, conversation, start_end_timestamp, bt, 
 import glob, re
 import pandas
 
-
+#get the uid from the filename
 def get_uid_from_filename(fn):
     s = str(fn)
     arr = s.split("/")
@@ -12,6 +12,7 @@ def get_uid_from_filename(fn):
     s = re.sub(r"\..*", "", s)
     return s
 
+#follow: process the datas of input dataset
 
 def get_activity_data():
     csv_path = "./processed_data/activity.csv"

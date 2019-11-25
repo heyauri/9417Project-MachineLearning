@@ -8,7 +8,6 @@ from matplotlib import pyplot as plt
 
 
 def evaluate_model(x_train, x_test, y_train, y_test, model, decomposition=False):
-    # x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.10, random_state=25)
 
     # normalizing
     scaling = StandardScaler()
@@ -39,6 +38,7 @@ if __name__ == "__main__":
     best_score = default_dict.copy()
     best_k = default_dict.copy()
     feature_upper = 80
+    #compare the score between different numbers of feature
     for feature_num in range(1, feature_upper + 1):
         print("current feature number: " + str(feature_num))
         dfs = get_dataset.get_k_features_by_importance(k=feature_num)

@@ -8,7 +8,6 @@ from matplotlib import pyplot as plt
 
 
 def evaluate_model(x_train, x_test, y_train, y_test, decomposition=False):
-    # x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.10, random_state=25)
 
     # normalizing
     scaling = StandardScaler()
@@ -23,7 +22,7 @@ def evaluate_model(x_train, x_test, y_train, y_test, decomposition=False):
         x_test = pca.transform(x_test)
 
     # train model
-    model = LogisticRegression(solver='lbfgs')
+    model = LogisticRegression(solver='lbfgs',penalty="l2")
     model.fit(x_train, y_train)
 
     # evaluate accuracy
@@ -39,6 +38,7 @@ if __name__ == "__main__":
     results_trend_by_feature_num = {"FlourishingScale": [], "Positive": [], "Negative": []}
     best_score = default_dict.copy()
     best_k = default_dict.copy()
+    #compare the score between different numbers of feature
     feature_upper = 80
     for feature_num in range(1, feature_upper + 1):
         print("current feature number: " + str(feature_num))

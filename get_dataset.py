@@ -71,6 +71,7 @@ label_dict = {
     }
 
 
+#mach the labels of features for dataFrame
 def match_feature_label(key, index):
     try:
         # print(key,index)
@@ -82,6 +83,7 @@ label_of_importance = []
 
 memory_dict={"arr":label_of_importance,"dfs":0}
 
+#get dataset by coorelation threshold
 def get_data_sets(threshold=0):
     global memory_dict
     if memory_dict["dfs"] != 0:
@@ -122,7 +124,7 @@ def get_data_sets(threshold=0):
     return dfs
 
 
-
+#scompare the importance of features via randomForest
 def feature_select(x, y, labels, importance=30):
     global memory_dict
     label_of_importance=memory_dict["arr"]
@@ -142,7 +144,7 @@ def feature_select(x, y, labels, importance=30):
     memory_dict["arr"] = [labels[indices[i]] for i in range(0, len(labels))]
     return memory_dict["arr"][0:importance]
 
-
+#get dataset by the compare the importance of features via randomForest
 def get_k_features_by_importance(k=30):
     if k == 0:
         k = 30

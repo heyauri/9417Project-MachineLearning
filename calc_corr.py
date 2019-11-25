@@ -15,7 +15,7 @@ def concat_dicts_by_uid(in_dict, out_dict):
         result[uid] = in_dict[uid] + out_dict[uid]
     return result
 
-
+#if needed, use PCA for decomposition
 def input_pca(in_dict, n="mle"):
     df = pandas.DataFrame(in_dict).T
     uids = in_dict.keys()
@@ -31,7 +31,7 @@ def input_pca(in_dict, n="mle"):
     # print(df)
     return data
 
-
+#calcuate the corrlation between the feature and the output
 def get_corr(in_dict, out_dict, labels_of_input=False, heatmap=False, reduce_dim=False, corr_method='kendall'):
     if reduce_dim:
         in_dict = input_pca(in_dict)
@@ -63,7 +63,7 @@ def get_corr(in_dict, out_dict, labels_of_input=False, heatmap=False, reduce_dim
         plt.show()
     return corr
 
-
+#select features that correlation with the output larger than the input threshold
 def get_corr_with_threshold(in_dict, out_dict, threshold=0.1, corr_method='pearson'):
     d = concat_dicts_by_uid(in_dict, out_dict)
     df = pandas.DataFrame(d).T

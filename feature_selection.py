@@ -20,6 +20,7 @@ def multivariate_pearsonr(X, y):
     return (numpy.array(scores), numpy.array(pvalues))
 
 
+#select features via RandomForest and compare the importance and corelation
 def feature_select(x, y, labels, y_contin):
     scaling = StandardScaler()
     scaling.fit(x)
@@ -60,13 +61,6 @@ if __name__ == "__main__":
         df.loc[df[label] <= y_median, label] = 0
         df.loc[df[label] > y_median, label] = 1
         x = df.drop(columns=label)
-        # print(x.shape)
         labels = x.columns
-
         y = df[label].to_numpy()
-        # k fold cross validation
-        # KF = StratifiedKFold(n_splits=10, shuffle=True)
-
-        accuracies = []
-
         feature_select(x, y, labels, y_contin)
