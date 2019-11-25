@@ -40,9 +40,10 @@ def feature_select(x, y, labels, y_contin):
     importances = forest.feature_importances_
     indices = numpy.argsort(importances)[::-1]
     for f in range(x_train.shape[1]):
-        print("%2d)         %-*s %-*f %-*f %-*f" % (
-            f + 1, 63, labels[indices[f]], 26, importances[indices[f]], 26, pearson_score[indices[f]],
-            26, p_values[indices[f]]))
+        if pearson_score[indices[f]]>0.1 and  p_values[indices[f]] >0.1:
+            print("%2d)         %-*s %-*f %-*f %-*f" % (
+                f + 1, 63, labels[indices[f]], 26, importances[indices[f]], 26, pearson_score[indices[f]],
+                26, p_values[indices[f]]))
     print("score:", forest.score(x_test, y_test))
 
 
